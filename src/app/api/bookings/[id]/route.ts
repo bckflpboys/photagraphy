@@ -1,14 +1,22 @@
+/*
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { withDB, withErrorHandler, withAuth, withValidation } from '@/lib/api-middlewares';
+import { withDB, withErrorHandler, withAuth, withValidation, ApiHandler } from '@/lib/api-middlewares';
 import { Booking } from '@/models';
 import { bookingUpdateSchema } from '@/lib/validations/booking';
 
+type RouteParams = { params: { id: string } };
+
 // GET /api/bookings/[id]
-export const GET = withErrorHandler(
+export const GET: ApiHandler = withErrorHandler(
   withDB(
-    withAuth(async (req: NextRequest, { params }: { params: { id: string } }) => {
-      const booking = await Booking.findById(params.id)
+    withAuth(async (req: NextRequest, context?: RouteParams) => {
+      const bookingId = context?.params?.id;
+      if (!bookingId) {
+        return NextResponse.json({ error: 'Booking ID is required' }, { status: 400 });
+      }
+
+      const booking = await Booking.findById(bookingId)
         .populate('photographer', 'name avatar')
         .populate('client', 'name avatar')
         .lean();
@@ -26,19 +34,25 @@ export const GET = withErrorHandler(
 );
 
 // PATCH /api/bookings/[id]
-export const PATCH = withErrorHandler(
+export const PATCH: ApiHandler = withErrorHandler(
   withDB(
     withAuth(
-      withValidation(bookingUpdateSchema.partial(), async (req: NextRequest, { params }: { params: { id: string } }) => {
+      withValidation(bookingUpdateSchema, async (req: NextRequest, context?: RouteParams) => {
+        const bookingId = context?.params?.id;
+        if (!bookingId) {
+          return NextResponse.json({ error: 'Booking ID is required' }, { status: 400 });
+        }
+
         const body = await req.json();
 
         const booking = await Booking.findByIdAndUpdate(
-          params.id,
+          bookingId,
           { $set: body },
-          { new: true, runValidators: true }
+          { new: true }
         )
           .populate('photographer', 'name avatar')
-          .populate('client', 'name avatar');
+          .populate('client', 'name avatar')
+          .lean();
 
         if (!booking) {
           return NextResponse.json(
@@ -54,10 +68,15 @@ export const PATCH = withErrorHandler(
 );
 
 // DELETE /api/bookings/[id]
-export const DELETE = withErrorHandler(
+export const DELETE: ApiHandler = withErrorHandler(
   withDB(
-    withAuth(async (req: NextRequest, { params }: { params: { id: string } }) => {
-      const booking = await Booking.findByIdAndDelete(params.id);
+    withAuth(async (req: NextRequest, context?: RouteParams) => {
+      const bookingId = context?.params?.id;
+      if (!bookingId) {
+        return NextResponse.json({ error: 'Booking ID is required' }, { status: 400 });
+      }
+
+      const booking = await Booking.findByIdAndDelete(bookingId);
 
       if (!booking) {
         return NextResponse.json(
@@ -66,10 +85,8 @@ export const DELETE = withErrorHandler(
         );
       }
 
-      return NextResponse.json(
-        { message: 'Booking deleted successfully' },
-        { status: 200 }
-      );
+      return NextResponse.json({ message: 'Booking deleted successfully' });
     })
   )
 );
+*/

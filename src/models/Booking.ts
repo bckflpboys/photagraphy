@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
 export interface IBooking extends Document {
   client: Schema.Types.ObjectId;
@@ -19,26 +19,12 @@ export interface IBooking extends Document {
     coordinates: number[];
     address: string;
   };
-  clientCount: number;
-  specialRequests?: string;
-  cancellation?: {
-    reason: string;
-    cancelledBy: 'client' | 'photographer';
-    date: Date;
-  };
-  payment: {
+  clientCount?: number;
+  payment?: {
     status: 'pending' | 'paid' | 'refunded';
     amount: number;
     currency: string;
-    transactionId?: string;
-    refundId?: string;
   };
-  notes?: {
-    client?: string;
-    photographer?: string;
-  };
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 const BookingSchema = new Schema<IBooking>(
@@ -61,43 +47,22 @@ const BookingSchema = new Schema<IBooking>(
       end: { type: Date, required: true },
     },
     location: {
-      type: {
-        type: String,
-        enum: ['Point'],
-        default: 'Point',
-      },
-      coordinates: {
-        type: [Number],
-        required: true,
-      },
+      type: { type: String, default: 'Point' },
+      coordinates: { type: [Number], required: true },
       address: { type: String, required: true },
     },
-    clientCount: { type: Number, required: true, min: 1 },
-    specialRequests: String,
-    cancellation: {
-      reason: String,
-      cancelledBy: { type: String, enum: ['client', 'photographer'] },
-      date: Date,
-    },
+    clientCount: { type: Number },
     payment: {
       status: {
         type: String,
         enum: ['pending', 'paid', 'refunded'],
         default: 'pending',
       },
-      amount: { type: Number, required: true },
-      currency: { type: String, required: true },
-      transactionId: String,
-      refundId: String,
-    },
-    notes: {
-      client: String,
-      photographer: String,
+      amount: { type: Number },
+      currency: { type: String },
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 // Indexes for better query performance
@@ -107,4 +72,6 @@ BookingSchema.index({ 'dateTime.start': 1 });
 BookingSchema.index({ status: 1 });
 BookingSchema.index({ location: '2dsphere' });
 
-export default mongoose.models.Booking || mongoose.model<IBooking>('Booking', BookingSchema);
+const Booking: Model<IBooking> = mongoose.models.Booking || mongoose.model<IBooking>('Booking', BookingSchema);
+
+export default Booking;

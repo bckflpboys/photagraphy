@@ -1,11 +1,13 @@
-const User = require('./User').default;
-const Photographer = require('./Photographer').default;
-const Booking = require('./Booking').default;
-const Review = require('./Review').default;
-const { Message, Conversation } = require('./Message');
-const Favorite = require('./Favorite').default;
+import User from './User';
+import Photographer from './Photographer';
+import Booking from './Booking';
+import Review from './Review';
+import { Message, Conversation } from './Message';
+import Favorite from './Favorite';
 
-module.exports = {
+export type { IBooking } from './Booking';
+
+export {
   User,
   Photographer,
   Booking,

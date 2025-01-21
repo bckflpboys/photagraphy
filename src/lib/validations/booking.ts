@@ -20,10 +20,4 @@ export const bookingSchema = yup.object({
   specialRequests: yup.string(),
 });
 
-export const bookingUpdateSchema = bookingSchema.shape({
-  status: yup.string().oneOf(['pending', 'confirmed', 'completed', 'cancelled']),
-  cancellation: yup.object({
-    reason: yup.string().required(),
-    cancelledBy: yup.string().oneOf(['client', 'photographer']).required(),
-  }),
-});
+export const bookingUpdateSchema = bookingSchema.partial();
