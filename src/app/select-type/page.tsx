@@ -17,7 +17,7 @@ export default function SelectTypePage() {
     try {
       // Update user metadata with selected type
       await user?.update({
-        publicMetadata: {
+        unsafeMetadata: {
           userType: type
         }
       })

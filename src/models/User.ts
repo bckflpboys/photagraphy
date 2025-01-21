@@ -1,7 +1,6 @@
-const mongoose = require('mongoose');
-const { Schema, Document } = mongoose;
+import mongoose, { Schema, Document } from 'mongoose';
 
-interface IUser extends Document {
+export interface IUser extends Document {
   clerkId: string;
   type: 'client' | 'photographer';
   email: string;
@@ -48,4 +47,4 @@ const UserSchema = new Schema<IUser>(
 // Create geospatial index
 UserSchema.index({ location: '2dsphere' });
 
-module.exports = mongoose.models.User || mongoose.model<IUser>('User', UserSchema);
+export default mongoose.models.User || mongoose.model<IUser>('User', UserSchema);

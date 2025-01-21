@@ -68,14 +68,18 @@ export const POST = withErrorHandler(
         });
         
         // Update photographer's stats
+        const currentStats = await Review.aggregate([
+          { $match: { photographer: review.photographer } },
+          { $group: { _id: null, avg: { $avg: '$rating' }, count: { $sum: 1 } } }
+        ]).then(results => results[0] || { avg: review.rating, count: 0 });
+
         await Photographer.findByIdAndUpdate(review.photographer, {
           $inc: {
             'stats.totalReviews': 1,
-            'stats.averageRating': (review.rating - (await Review.aggregate([
-              { $match: { photographer: review.photographer } },
-              { $group: { _id: null, avg: { $avg: '$rating' } } },
-            ])).avg) / (await Review.countDocuments({ photographer: review.photographer })),
           },
+          $set: {
+            'stats.averageRating': ((currentStats.avg * currentStats.count) + review.rating) / (currentStats.count + 1)
+          }
         });
         
         // Populate references

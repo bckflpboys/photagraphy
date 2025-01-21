@@ -12,7 +12,7 @@ export default function SessionShareManager({
   currentClient,
   onShareUpdate,
 }: SessionShareManagerProps) {
-  const [isShareable, setIsShareable] = useState(session.isShareable);
+  const [isShareable, setIsShareable] = useState(currentClient?.sharePreference ?? false);
   const [priceShare, setPriceShare] = useState(0);
 
   useEffect(() => {

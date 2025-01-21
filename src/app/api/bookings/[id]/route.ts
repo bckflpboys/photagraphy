@@ -1,6 +1,12 @@
-/*
+// Temporarily disabled API route
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+
+// Force dynamic to ensure proper routing
+export const dynamic = 'force-dynamic';
+
+// Commented out original implementation
+/*
 import { withDB, withErrorHandler, withAuth, withValidation, ApiHandler } from '@/lib/api-middlewares';
 import { Booking } from '@/models';
 import { bookingUpdateSchema } from '@/lib/validations/booking';
@@ -90,3 +96,16 @@ export const DELETE: ApiHandler = withErrorHandler(
   )
 );
 */
+
+// Return 404 for all methods while API is disabled
+export async function GET() {
+  return new Response(null, { status: 404 });
+}
+
+export async function PATCH() {
+  return new Response(null, { status: 404 });
+}
+
+export async function DELETE() {
+  return new Response(null, { status: 404 });
+}

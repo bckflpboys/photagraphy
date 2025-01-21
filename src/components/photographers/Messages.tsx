@@ -6,7 +6,7 @@ import {
   Typography,
   TextField,
   List,
-  ListItem,
+  ListItemButton,
   ListItemText,
   ListItemAvatar,
   Avatar,
@@ -194,18 +194,16 @@ const Messages: React.FC = () => {
         <List sx={{ flex: 1, overflow: 'auto' }}>
           {filteredConversations.map((conv) => (
             <React.Fragment key={conv.id}>
-              <ListItem
-                component="div"
+              <ListItemButton
                 onClick={() => setSelectedConversation(conv.id)}
                 sx={{
-                  py: 1.5,
-                  cursor: 'pointer',
+                  py: 2,
                   '&.Mui-selected': {
-                    backgroundColor: 'rgba(25, 118, 210, 0.15)',
+                    backgroundColor: 'rgba(25, 118, 210, 0.15)'
                   },
                   '&:hover': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                  },
+                    backgroundColor: 'rgba(255, 255, 255, 0.05)'
+                  }
                 }}
                 selected={selectedConversation === conv.id}
               >
@@ -261,7 +259,7 @@ const Messages: React.FC = () => {
                 >
                   {formatTimeAgo(conv.timestamp)}
                 </Typography>
-              </ListItem>
+              </ListItemButton>
               <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.1)' }} />
             </React.Fragment>
           ))}

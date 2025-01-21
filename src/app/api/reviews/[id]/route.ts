@@ -1,75 +1,19 @@
-// import { NextResponse } from 'next/server';
-// import type { NextRequest } from 'next/server';
-// import { withDB, withErrorHandler, withAuth, withValidation } from '@/lib/api-middlewares';
-// import { Review } from '@/models';
-// import { reviewSchema, reviewResponseSchema, reviewReportSchema } from '@/lib/validations/review';
+// Temporarily disabled API route
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-// // GET /api/reviews/[id]
-// export const GET = withErrorHandler(
-//   withDB(async (req: NextRequest, { params }: { params: { id: string } }) => {
-//     const review = await Review.findById(params.id)
-//       .populate('photographer', 'name avatar')
-//       .populate('client', 'name avatar')
-//       .populate('booking', 'service dateTime')
-//       .lean();
+// Force dynamic to ensure proper routing
+export const dynamic = 'force-dynamic';
 
-//     if (!review) {
-//       return NextResponse.json(
-//         { error: 'Review not found' },
-//         { status: 404 }
-//       );
-//     }
+// Return 404 for all methods while API is disabled
+export async function GET() {
+  return new Response(null, { status: 404 });
+}
 
-//     return NextResponse.json(review);
-//   })
-// );
+export async function PATCH() {
+  return new Response(null, { status: 404 });
+}
 
-// // PATCH /api/reviews/[id]
-// export const PATCH = withErrorHandler(
-//   withDB(
-//     withAuth(
-//       withValidation(reviewSchema.partial(), async (req: NextRequest, { params }: { params: { id: string } }) => {
-//         const body = await req.json();
-
-//         const review = await Review.findByIdAndUpdate(
-//           params.id,
-//           { $set: body },
-//           { new: true, runValidators: true }
-//         )
-//           .populate('photographer', 'name avatar')
-//           .populate('client', 'name avatar')
-//           .populate('booking', 'service dateTime');
-
-//         if (!review) {
-//           return NextResponse.json(
-//             { error: 'Review not found' },
-//             { status: 404 }
-//           );
-//         }
-
-//         return NextResponse.json(review);
-//       })
-//     )
-//   )
-// );
-
-// // DELETE /api/reviews/[id]
-// export const DELETE = withErrorHandler(
-//   withDB(
-//     withAuth(async (req: NextRequest, { params }: { params: { id: string } }) => {
-//       const review = await Review.findByIdAndDelete(params.id);
-
-//       if (!review) {
-//         return NextResponse.json(
-//           { error: 'Review not found' },
-//           { status: 404 }
-//         );
-//       }
-
-//       return NextResponse.json(
-//         { message: 'Review deleted successfully' },
-//         { status: 200 }
-//       );
-//     })
-//   )
-// );
+export async function DELETE() {
+  return new Response(null, { status: 404 });
+}
