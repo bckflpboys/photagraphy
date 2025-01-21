@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 26, 26, 26;
+  --background-start-rgb: 245, 245, 245;
+  --background-end-rgb: 255, 255, 255;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+/* Custom styles for better contrast and readability */
+.text-primary {
+  color: #8B4513;
+}
+
+.bg-primary {
+  background-color: #8B4513;
+}
+
+.hover\:bg-secondary:hover {
+  background-color: #3E2723;
+}
+
+.hover\:text-primary:hover {
+  color: #8B4513;
+}
